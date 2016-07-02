@@ -10,10 +10,10 @@ import (
 
 func main() {
 
-	beego.AppConfig.Set("key", "value")
-	// x := beego.AppConfig.String("mysqldb")
-	// fmt.Println(x)
-	beego.SetStaticPath("download", "download")
+	// beego.AppConfig.Set("key", "value")
+	// // x := beego.AppConfig.String("mysqldb")
+	// // fmt.Println(x)
+	// beego.SetStaticPath("download", "download")
 
 	class.TestORM()
 	beego.Run()
