@@ -4,7 +4,7 @@ import (
 	_ "beegoLearn/quickstart/routers"
 	// "fmt"
 	_ "beegoLearn/quickstart/models"
-	"beegoLearn/quickstart/models/class"
+	// "beegoLearn/quickstart/models/class"
 	"github.com/astaxie/beego"
 )
 
@@ -15,6 +15,6 @@ func main() {
 	// // fmt.Println(x)
 	// beego.SetStaticPath("download", "download")
 
-	class.TestORM()
+	// class.TestORM()
 	beego.Run()
 }

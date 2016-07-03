@@ -14,3 +14,7 @@ func (c *UserController) Profile() {
 	c.Data["hobby"] = []string{"bsk", "football"}
 	c.TplName = "user/profile.html"
 }
+
+func (c *UserController) PageJoin() {
+	c.TplName = "user/join.html"
+}

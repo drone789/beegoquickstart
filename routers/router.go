@@ -12,4 +12,7 @@ func init() {
 
 	beego.Router("/api/user/profile", &controllers.UserController{}, `get:API_Profile`)
 
+	beego.Router("/join", &controllers.UserController{}, `get:PageJoin`)
+	beego.Router("/login", &controllers.UserController{}, `post:Login`)
+	beego.Router("/register", &controllers.UserController{}, `post:Register`)
 }

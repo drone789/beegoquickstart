@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<head>
+	<title>Join</title>
+
+	{{template "head.html" .}}
+</head>
+
+<body>
+	<form action="/register" method="post">
+		<input name="userid" value="geel" />
+		<input name="nick" value="Nick" />
+		<input  type="password" name="password1"/>
+		<input type="password" name="password2"/>
+		<input name="email">
+		<input type="submit">
+	</form>
+
+	<script type="text/javascript">
+		$('form').bind('submit', function(){
+			var tmp = ajaxSubmit(this, function(){
+				console.log(tmp.responseJSON)
+			})
+			return false;
+		})
+	</script>
+</body>
+</html>
