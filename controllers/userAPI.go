@@ -100,9 +100,113 @@ func (c *UserController) Register() {
 
 	return
 }
+
+func (c *BaseController) Setting() {
+	c.CheckLogin()
+	switch c.GetString("do") {
+	case "info":
+		c.SettingInfo()
+	case "chpwd":
+		c.SettingPassword()
+	}
+
+}
+
+func (c *BaseController) SettingInfo() {
+	user := c.GetSession("user").(class.User)
+	user.Nick = c.GetString("nick")
+	user.Email = c.GetString("email")
+	user.Url = c.GetString("url")
+	user.Hobby = c.GetString("hobby")
+
+	user.Update()
+	c.DoLogin(user)
+
+	ret := RET{
+		OK: true,
+	}
+
+	c.Data["json"] = ret
+
+	c.ServeJSON()
+}
+
+func (c *BaseController) SettingPassword() {
+	user := c.GetSession("user").(class.User)
+	user.Password = PwGen(c.GetString("pwd2"))
+	user.Update()
+	c.DoLogin(user)
+
+	ret := RET{
+		OK: true,
+	}
+
+	c.Data["json"] = ret
+
+	c.ServeJSON()
+
+}
+
+func (c *UserController) Logout() {
+	c.DoLogout()
+}
+
+func (c *UserController) Login() {
+	ret := RET{
+		OK:      true,
+		Content: "success",
+	}
+
+	defer func() {
+		c.Data["json"] = ret
+		c.ServeJSON()
+	}()
+
+	id := c.GetString("userid")
+	pwd := c.GetString("password")
+
+	valid := validation.Validation{}
+
+	valid.Required(id, "UserId")
+	valid.Required(pwd, "password")
+
+	valid.MaxSize(pwd, 30, "Password")
+
+	u := &class.User{Id: id}
+
+	switch {
+	case valid.HasErrors():
+	case u.ReadDB() != nil:
+		valid.Error("用户不存在")
+
+	case PwCheck(pwd, u.Password) == false:
+		valid.Error("密码错误")
+
+	default:
+		c.DoLogin(*u)
+		ret.OK = true
+		return
+
+	}
+
+	ret.Content = valid.Errors[0].Key + valid.Errors[0].Message
+	ret.OK = false
+	return
+}
+
 func PwGen(pass string) string {
 	salt := strconv.FormatInt(time.Now().UnixNano()%9000+1000, 10)
 	return Base64Encode(Sha1(Md5(pass)+salt) + salt)
+}
+
+func PwCheck(pwd, saved string) bool {
+	saved = Base64Decode(saved)
+	if len(saved) < 4 {
+		return false
+	}
+
+	salt := saved[len(saved)-4:]
+	return Sha1(Md5(pwd)+salt)+salt == saved
 }
 
 func Sha1(s string) string {
@@ -120,8 +224,4 @@ func Base64Encode(s string) string {
 func Base64Decode(s string) string {
 	res, _ := base64.StdEncoding.DecodeString(s)
 	return string(res)
-}
-
-func (c *UserController) Login() {
-	c.ServeJSON()
 }

@@ -1,11 +1,12 @@
 package controllers
 
 import (
-	"github.com/astaxie/beego"
+// "github.com/astaxie/beego"
 )
 
 type UserController struct {
-	beego.Controller
+	// beego.Controller
+	BaseController
 }
 
 func (c *UserController) Profile() {
@@ -17,4 +18,9 @@ func (c *UserController) Profile() {
 
 func (c *UserController) PageJoin() {
 	c.TplName = "user/join.html"
+}
+
+func (c *UserController) PageSetting() {
+	c.CheckLogin()
+	c.TplName = "user/setting.html"
 }

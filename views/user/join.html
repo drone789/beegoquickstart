@@ -6,6 +6,61 @@
 </head>
 
 <body>
+
+{{template "header.html" .}}
+
+<div id="wrap">
+	<div class="container">
+		<div class="col-sm-1"></div>
+		<div class="col-sm-4">
+			<h2>Login</h2>
+			<div class="well">
+				<form action="/login" method="post">
+					<div class="form-group">
+						<label>User</label>
+						<input class="form-control" name="userid">
+					</div>
+					<div class="form-group">
+						<label>Password</label>
+						<input class="form-control" name="password" type="password">
+					</div>
+					<input type="submit" class="btn btn-default">
+				</form>
+			</div>
+		</div>
+
+		<div class="col-sm-4">
+			<h2>Register</h2>
+			<div class="well">
+				<form action="/register" method="post">
+					<div class="form-group">
+						<label>User</label>
+						<input class="form-control" name="userid">
+					</div>
+					<div class="form-group">
+						<label>Nick</label>
+						<input class="form-control" name="nick">
+					</div>
+					<div class="form-group">
+						<label>Password</label>
+						<input class="form-control" name="password1" type="password">
+					</div>
+					<div class="form-group">
+						<label>Conform</label>
+						<input class="form-control" name="password2" type="password">
+					</div>
+					<div class="form-group">
+						<label>Email</label>
+						<input class="form-control" name="email">
+					</div>
+
+					<input type="submit" class="btn btn-default">
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- {{.user}}
 	<form action="/register" method="post">
 		<input name="userid" value="geel" />
 		<input name="nick" value="Nick" />
@@ -15,9 +70,22 @@
 		<input type="submit">
 	</form>
 
+	<form action="/login" method="post">
+		Id:<input name="userid">
+		<br>
+		Password:<input type="password" name="password">
+		<br>
+		<input type="submit">
+	</form> -->
+
 	<script type="text/javascript">
 		$('form').bind('submit', function(){
 			var tmp = ajaxSubmit(this, function(){
+				if (tmp.responseJSON.success == true){
+					alert("success")
+				}else {
+					alert(tmp.responseJSON.content)
+				}
 				console.log(tmp.responseJSON)
 			})
 			return false;
